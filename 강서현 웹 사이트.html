@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 거래 사이트</title>
+    <link rel="icon" href="C:\Users\JUN-ADMIN\Desktop\새 폴더\아이콘.png"> <!-- 책 모양 아이콘 -->
+    <link href="C:\Users\JUN-ADMIN\Desktop\새 폴더\아이콘.png" rel="stylesheet">
+    <style>
+        /* 전체 스타일 */
+        body {
+            font-family: 'Roboto', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 부드러운 배경색 */
+            color: #333; /* 어두운 회색 텍스트 */
+        }
+
+        header {
+            background-color: #2e2e2e; /* 다크 그레이 */
+            color: #fff;
+            padding: 30px 0;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            letter-spacing: 1px;
+        }
+
+    /* 내비게이션 */
+    nav {
+        background-color: #333; /* 다크 그레이 */
+        padding: 12px 0;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        border-bottom: 2px solid #fff; 
+    }
+
+    nav a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    nav a:hover, nav a.active {
+        color: #d3d3d3; /* 연한 회색 글씨 색상 */
+    }
+
+    /* 버튼 클릭 시 스타일 */
+    nav a.active {
+        font-weight: bold; /* 선택된 버튼 강조 */
+    }
+
+        /* 주요 콘텐츠 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* 섹션 */
+        .form-container, .search-container, .book-list, .comments {
+            background-color: #fff; 
+            padding: 30px;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+        }
+
+        .form-container input, .form-container select, .form-container textarea,
+        .search-container input {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .form-container button, .search-container button {
+            background-color: #333; 
+            color: #fff;
+            border: none;
+            padding: 14px 25px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .form-container button:hover, .search-container button:hover {
+            background-color: #d3d3d3; /* 연한 회색 버튼 강조 */
+        }
+
+        /* 책 목록 */
+        .book-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+        }
+
+        .book-item img {
+            width: 60px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .book-item .details {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        .book-item .details span {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .book-item .details span strong {
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* 반응형 디자인 */
+        @media screen and (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .book-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .book-item .details {
+                padding-left: 0;
+            }
+
+            .form-container, .search-container, .book-list, .comments {
+                padding: 20px;
+            }
+        }
+
+        /* 공지 스타일 */
+        .notice {
+            background-color: #f2f2f2; /* 연한 회색 배경 */
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* 댓글 디자인 개선 */
+        .comments {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .comments input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 16px;
+        }
+
+        .comments button {
+            padding: 12px 24px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .comments button:hover {
+            background-color: #d3d3d3; /* 연한 회색 버튼 강조 */
+        }
+
+        .comment-item {
+            background-color: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-item strong {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .comment-item p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .comment-item .timestamp {
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    책 거래 사이트
+</header>
+<nav>
+    <a href="#home" class="nav-item">홈</a>
+    <a href="#search" class="nav-item">검색</a>
+    <a href="#bookFormSection" class="nav-item">상품 등록</a>
+    <a href="#bookListSection" class="nav-item">책 목록</a>
+    <a href="#commentsSection" class="nav-item">댓글</a>
+</nav>
+<div class="container">
+    <!-- 홈 섹션 -->
+    <div id="home">
+        <h2>홈</h2>
+        <p>책 거래 사이트에 오신 것을 환영합니다!</p>
+    </div>
+    <!-- 검색 섹션 -->
+    <div id="search" class="search-container">
+        <h2>검색</h2>
+        <input type="text" id="searchInput" placeholder="책 제목, 저자 등으로 검색...">
+        <button onclick="searchBooks()">검색</button>
+        <div id="searchResultMessage"></div>
+    </div>
+    <!-- 상품 등록 섹션 -->
+    <div id="bookFormSection" class="form-container">
+        <h2>상품 등록</h2>
+        <form id="bookForm" onsubmit="addBook(event)">
+            <label for="book-title">책 제목:</label>
+            <input type="text" id="book-title" name="book-title" required>
+            <label for="book-author">저자:</label>
+            <input type="text" id="book-author" name="book-author" required>
+            <label for="book-publisher">출판사:</label>
+            <input type="text" id="book-publisher" name="book-publisher" required>
+            <label for="book-condition">상태:</label>
+            <select id="book-condition" name="book-condition">
+                <option value="new">새 책</option>
+                <option value="used">중고 책</option>
+                <option value="like-new">거의 새 책</option>
+            </select>
+            <label for="book-price">가격:</label>
+            <input type="number" id="book-price" name="book-price" required>
+            <label for="book-photo">책 사진:</label>
+            <input type="file" id="book-photo" name="book-photo">
+            <label for="book-info">상세 정보:</label>
+            <textarea id="book-info" name="book-info" required></textarea>
+            <button type="submit">등록하기</button>
+        </form>
+    </div>
+    <!-- 책 목록 섹션 -->
+    <div id="bookListSection" class="book-list">
+        <h2>책 목록</h2>
+        <div id="booksContainer"></div>
+    </div>
+    <!-- 댓글 섹션 -->
+    <div id="commentsSection" class="comments">
+        <div class="notice">
+            책 구매 희망 시 학번과 이름을 작성해주세요. 책은 선착순으로 판매됩니다.
+        </div>
+        <h2>댓글</h2>
+        <input type="text" id="commentText" placeholder="댓글을 입력해주세요...">
+        <button onclick="addComment()">댓글 달기</button>
+        <div id="commentsList"></div>
+    </div>
+</div>
+
+<script>
+    // 책 목록
+    let books = [];
+
+    function addBook(event) {
+        event.preventDefault();
+        const title = document.getElementById("book-title").value;
+        const author = document.getElementById("book-author").value;
+        const publisher = document.getElementById("book-publisher").value;
+        const condition = document.getElementById("book-condition").value;
+        const price = document.getElementById("book-price").value;
+        const photo = document.getElementById("book-photo").files[0];
+        const info = document.getElementById("book-info").value;
+
+        const newBook = {
+            title,
+            author,
+            publisher,
+            condition,
+            price,
+            photo: photo ? URL.createObjectURL(photo) : 'https://via.placeholder.com/60x90?text=No+Image',
+            info,
+        };
+
+        books.push(newBook);
+        renderBooks();
+        document.getElementById("bookForm").reset();
+    }
+
+    function renderBooks() {
+        const booksContainer = document.getElementById("booksContainer");
+        booksContainer.innerHTML = '';
+        books.forEach((book, index) => {
+            const bookElement = document.createElement('div');
+            bookElement.classList.add('book-item');
+            bookElement.id = `book-${index}`;
+            bookElement.innerHTML = `
+                <img src="${book.photo}" alt="${book.title}">
+                <div class="details">
+                    <span><strong>책 제목:</strong> ${book.title}</span>
+                    <span><strong>저자:</strong> ${book.author}</span>
+                    <span><strong>출판사:</strong> ${book.publisher}</span>
+                    <span><strong>상태:</strong> ${book.condition}</span>
+                    <span><strong>가격:</strong> ${book.price}원</span>
+                    <span><strong>상세 정보:</strong> ${book.info}</span>
+                </div>
+            `;
+            booksContainer.appendChild(bookElement);
+        });
+    }
+
+    // 댓글 기능
+    function generateRandomNickname() {
+        const nicknames = ["따뜻한 햇살", "차가운 장미", "날카로운 검", "우울한 구름", "새하얀 눈물"];
+        const randomIndex = Math.floor(Math.random() * nicknames.length);
+        return nicknames[randomIndex];
+    }
+
+    function addComment() {
+        const commentText = document.getElementById("commentText").value;
+        if (commentText.trim() === "") {
+            alert("댓글을 입력해주세요.");
+            return;
+        }
+
+        const currentTime = new Date().toLocaleString();
+
+        const commentItem = document.createElement('div');
+        commentItem.classList.add('comment-item');
+        commentItem.innerHTML = `
+            <strong>${generateRandomNickname()}:</strong>
+            <p>${commentText}</p>
+            <div class="timestamp">${currentTime}</div>
+        `;
+        document.getElementById("commentsList").appendChild(commentItem);
+        document.getElementById("commentText").value = ''; 
+    }
+
+    // 검색 기능
+    function searchBooks() {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        const filteredBooks = books.filter(book => 
+            book.title.toLowerCase().includes(searchInput) || 
+            book.author.toLowerCase().includes(searchInput)
+        );
+
+        const booksContainer = document.getElementById("booksContainer");
+        const searchResultMessage = document.getElementById("searchResultMessage");
+        booksContainer.innerHTML = '';
+        
+        if (filteredBooks.length === 0) {
+            searchResultMessage.innerHTML = `<p>검색 결과가 없습니다.</p>`;
+        } else {
+            searchResultMessage.innerHTML = '';  // 검색 결과 메시지 초기화
+            filteredBooks.forEach((book, index) => {
+                const bookElement = document.createElement('div');
+                bookElement.classList.add('book-item');
+                bookElement.id = `book-${index}`;
+                bookElement.innerHTML = `
+                    <img src="${book.photo}" alt="${book.title}">
+                    <div class="details">
+                        <span><strong>책 제목:</strong> ${book.title}</span>
+                        <span><strong>저자:</strong> ${book.author}</span>
+                        <span><strong>출판사:</strong> ${book.publisher}</span>
+                        <span><strong>상태:</strong> ${book.condition}</span>
+                        <span><strong>가격:</strong> ${book.price}원</span>
+                        <span><strong>상세 정보:</strong> ${book.info}</span>
+                    </div>
+                `;
+                booksContainer.appendChild(bookElement);
+                
+                // 검색 후 해당 책으로 스크롤 이동
+                if (book.title.toLowerCase().includes(searchInput)) {
+                    document.getElementById(`book-${index}`).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
